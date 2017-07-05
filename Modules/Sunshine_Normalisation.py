@@ -23,7 +23,7 @@ import Metadata_Interpreter
 
 def Image_Math(Fullfilename, IrradianceRatio):
     path, filename = os.path.split(Fullfilename)
-    outpath = os.path.join(path, 'Calibrated')
+    outpath = os.path.join(path, 'SunNormalised')
     if not os.path.exists(outpath):
         os.makedirs(outpath)
     InputFile = gdal.Open(Fullfilename)
