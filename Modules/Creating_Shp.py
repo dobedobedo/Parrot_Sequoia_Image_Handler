@@ -4,6 +4,8 @@
 Created on Thu Jun  8 10:47:19 2017
 
 @author: Yu-Hsuan Tu
+
+This module uses photo's geotag to create waypoints and trajectory shapefile
 """
 import os
 from osgeo import ogr, osr
