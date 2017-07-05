@@ -1,4 +1,4 @@
-# PyPI packages needed:
+# Additional PyPI packages needed:
 - numpy
 - gdal
 - pytz
