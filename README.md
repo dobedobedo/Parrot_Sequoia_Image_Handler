@@ -4,7 +4,7 @@ Homemade code to deal with Parrot Sequoia Images
 Modules will be continuously updated  
   
 # Tools contain:
-  - Create_Shp: Create images waypoints and trajactory shapefile based on photo's geotags  
+  - Createing_Shp: Create images waypoints and trajactory shapefile based on photo's geotags  
   - Sunshine_Calibration: Adjust photo's brightness based on the sunshine sensor's measurement  
   
 # Note
