@@ -3,7 +3,7 @@
 """
 Created on Tue Jul  4 18:08:04 2017
 
-@author: uqytu1
+@author: Yu-Hsuan Tu
 """
 import os
 import tkinter as tk
