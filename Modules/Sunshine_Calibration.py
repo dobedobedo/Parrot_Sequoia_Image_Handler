@@ -4,6 +4,12 @@
 Created on Tue Jul  4 18:08:04 2017
 
 @author: Yu-Hsuan Tu
+
+This module uses Sequoia's sunshine irradiance to adjust photo's brightness.
+Usage:
+Select a folder containing all the photos, then select one reference image (Band doesn't matter)
+The program will use the selected image's sunshine irradiance as reference,
+and manipulate the other photos based on the sunshine irradiance ratio to the reference image
 """
 import os
 import tkinter as tk
