@@ -1,6 +1,7 @@
 # PyPI packages needed:
 - numpy
 - gdal
+- pytz
 
 # Homemade dependencies
 - Retrieve_Metadata
