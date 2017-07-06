@@ -12,6 +12,7 @@ The program will use the selected image's sunshine irradiance as reference,
 and manipulate the other photos based on the sunshine irradiance ratio to the reference image
 """
 import os
+import subprocess
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
 import numpy as np
@@ -58,11 +59,8 @@ def Image_Math(Fullfilename, IrradianceRatio):
     OutImage.SetProjection(Projection)
     OutImage = None
     InputFile = None
-    os.system("exiftool -tagsFromFile \"{Src}\" -all:all "
-              "-tagsFromFile \"{Src}\" -xmp:all \"{Dst}\" && "
-              "exiftool -delete_original! \"{Dst}\"".format(
-                        Src=Fullfilename, 
-                        Dst=OutFile))
+    subprocess.run(['exiftool', '-tagsFromFile', Fullfilename, '-ALL', '-XMP', OutFile])
+    subprocess.run(['exiftool', '-delete_original!', OutFile])
 
 Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'SubSecCreateDate', 'IrradianceList')
 
