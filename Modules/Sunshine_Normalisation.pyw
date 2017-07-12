@@ -68,6 +68,7 @@ gdal.AllRegister()
 tk.Tk().withdraw()
 path, SelectFile = os.path.split(askopenfilename(title='Select a reference image. Bands doesn\'t matter.'))
 ReferenceFile = os.path.splitext(SelectFile)[0][0:-3]
+RefNumber = 'Ref_' + ReferenceFile.split('_')[-2]
 
 IrradianceRefGRE = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'GRE.TIF'])
 IrradianceRefRED = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'RED.TIF'])
@@ -87,5 +88,6 @@ if SelectFile in files:
             Image_Math(os.path.join(path, file), Irradiance/IrradianceRefREG)
         elif 'NIR' in file:
             Image_Math(os.path.join(path, file), Irradiance/IrradianceRefNIR)
-        
+    with open(os.path.join(path, RefNumber), 'a'):
+        os.utime(os.path.join(path, RefNumber), None)
         
