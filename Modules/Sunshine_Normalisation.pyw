@@ -44,7 +44,7 @@ def Image_Math(Fullfilename, IrradianceRatio):
         image = bands[band].ReadAsArray(0,0,cols,rows)
         
         # Note: we keep the output and input image as the same type to avoid potential problem
-        outimage = ((image * IrradianceRatio).round()).astype(image.dtype)
+        outimage = ((image / IrradianceRatio).round()).astype(image.dtype)
         OutFile = os.path.join(outpath,filename)
         if os.path.exists(OutFile):
             os.remove(OutFile)
