@@ -8,4 +8,5 @@ Modules will be continuously updated
   - **Sunshine_Normalisation**: Adjust photo's brightness based on the sunshine sensor's measurement  
   
 # Note
-The tools use the two modules in _Dependency_. Please put them in the same folder.
+The tools use the two modules in _Dependency_. Please put them in the same folder.  
+exiftool is required. See http://www.sno.phy.queensu.ca/~phil/exiftool/
