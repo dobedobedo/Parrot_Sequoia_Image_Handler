@@ -32,7 +32,7 @@ from tkinter import messagebox
 
 def RetrieveData(PathImage, *Tags):
     #Retrive all metadata using exiftool
-    Args = ['exiftool', '-s', '{File}'.format(File=PathImage)]
+    Args = ['exiftool', '-s', '-x', 'Composite:GPSAltitude', '{File}'.format(File=PathImage)]
     for Tag in Tags:
         Args.insert(-1, '-{}'.format(Tag))
     command = ' '.join(Args)
