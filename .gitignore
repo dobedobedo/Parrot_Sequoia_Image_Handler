@@ -1,0 +1,12 @@
+# User-specific files
+*.txt
+*.exe
+
+# Data Files
+/Data/
+
+# Build results
+__pycache__/
+
+# Python Files
+__init__.py
