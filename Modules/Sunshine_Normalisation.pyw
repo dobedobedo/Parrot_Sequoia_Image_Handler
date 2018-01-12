@@ -16,9 +16,9 @@ import subprocess
 import numpy as np
 import gdal
 from osgeo import gdal_array
-import Retrieve_Metadata
-from Retrieve_Metadata import PathImage
-import Metadata_Interpreter
+from Dependency import Retrieve_Metadata
+from Dependency.Retrieve_Metadata import PathImage
+from Dependency import Metadata_Interpreter
 
 def Image_Math(Fullfilename, IrradianceRatio):
     path, filename = os.path.split(Fullfilename)
