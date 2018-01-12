@@ -9,9 +9,9 @@ This module uses photo's geotag to create waypoints and trajectory shapefile
 """
 import os
 from osgeo import ogr, osr
-import Retrieve_Metadata
-from Retrieve_Metadata import PathImage
-import Metadata_Interpreter
+from Dependency import Retrieve_Metadata
+from Dependency.Retrieve_Metadata import PathImage
+from Dependency import Metadata_Interpreter
 
 Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'GPSPosition', 'GPSAltitude')
 PositionAltList = {}
