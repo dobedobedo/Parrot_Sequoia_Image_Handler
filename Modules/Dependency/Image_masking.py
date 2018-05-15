@@ -18,7 +18,6 @@ Therefore, the nodata value is set manually here.
 you can change the extraction method by uncomment the ndv sourcecode.
 """
 
-import sys
 import os
 import numpy as np
 import numpy.ma as ma
