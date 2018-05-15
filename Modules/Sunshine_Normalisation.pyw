@@ -17,7 +17,6 @@ import numpy as np
 import gdal
 from osgeo import gdal_array
 from Dependency import Retrieve_Metadata
-from Dependency.Retrieve_Metadata import PathImage
 from Dependency import Metadata_Interpreter
 
 def Image_Math(Fullfilename, IrradianceRatio):
@@ -66,37 +65,41 @@ def Image_Math(Fullfilename, IrradianceRatio):
     subprocess.run(['exiftool', '-tagsFromFile', Fullfilename, '-ALL', '-XMP', OutFile])
     subprocess.run(['exiftool', '-delete_original!', OutFile])
 
-Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'SubSecCreateDate', 'IrradianceList')
-
-gdal.AllRegister()
-
-files = sorted(Metadata.keys())
-IrradianceList = []
-for file in files:
-    IrradianceList.append(Metadata_Interpreter.GetSunIrradiance(Metadata[file]))
+if __name__ == '__main__':
+    PathImage = Retrieve_Metadata.OpenDirectory()
+    Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'SubSecCreateDate', 'IrradianceList')
     
-# Use the file which has minimum irradiance as reference to reduce chance of over-exposured
-SelectFile = files[IrradianceList.index(min(IrradianceList))]
-ReferenceFile = os.path.splitext(SelectFile)[0][0:-3]
-RefNumber = 'Ref_' + ReferenceFile.split('_')[-2]
-
-IrradianceRefGRE = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'GRE.TIF'])
-IrradianceRefRED = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'RED.TIF'])
-IrradianceRefREG = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'REG.TIF'])
-IrradianceRefNIR = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'NIR.TIF'])
-
-path = os.path.split(PathImage)[0]
-
-for file in files:
-    Irradiance = Metadata_Interpreter.GetSunIrradiance(Metadata[file])
-    if 'GRE' in file:
-        Image_Math(os.path.join(path, file), Irradiance/IrradianceRefGRE)
-    elif 'RED' in file:
-        Image_Math(os.path.join(path, file), Irradiance/IrradianceRefRED)
-    elif 'REG' in file:
-        Image_Math(os.path.join(path, file), Irradiance/IrradianceRefREG)
-    elif 'NIR' in file:
-        Image_Math(os.path.join(path, file), Irradiance/IrradianceRefNIR)
-with open(os.path.join(path, RefNumber), 'a'):
-    os.utime(os.path.join(path, RefNumber), None)
+    gdal.AllRegister()
+    
+    files = sorted(Metadata.keys())
+    IrradianceList = []
+    for file in files:
+        IrradianceList.append(Metadata_Interpreter.GetSunIrradiance(Metadata[file]))
+        
+    # Use the file which has minimum irradiance as reference to reduce chance of over-exposured
+    SelectFile = files[IrradianceList.index(min(IrradianceList))]
+    ReferenceFile = os.path.splitext(SelectFile)[0][0:-3]
+    RefNumber = 'Ref_' + ReferenceFile.split('_')[-2]
+    
+    IrradianceRefGRE = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'GRE.TIF'])
+    IrradianceRefRED = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'RED.TIF'])
+    IrradianceRefREG = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'REG.TIF'])
+    IrradianceRefNIR = Metadata_Interpreter.GetSunIrradiance(Metadata[ReferenceFile+'NIR.TIF'])
+    
+    path = os.path.split(PathImage)[0]
+    
+    for file in files:
+        Irradiance = Metadata_Interpreter.GetSunIrradiance(Metadata[file])
+        if 'GRE' in file:
+            Image_Math(os.path.join(path, file), Irradiance/IrradianceRefGRE)
+        elif 'RED' in file:
+            Image_Math(os.path.join(path, file), Irradiance/IrradianceRefRED)
+        elif 'REG' in file:
+            Image_Math(os.path.join(path, file), Irradiance/IrradianceRefREG)
+        elif 'NIR' in file:
+            Image_Math(os.path.join(path, file), Irradiance/IrradianceRefNIR)
+    with open(os.path.join(path, RefNumber), 'a'):
+        os.utime(os.path.join(path, RefNumber), None)
+    
+    Retrieve_Metadata.ShowMessage('Done', 'Finish processing image')
         
