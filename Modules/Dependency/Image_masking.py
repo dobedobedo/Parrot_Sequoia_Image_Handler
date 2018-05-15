@@ -416,6 +416,7 @@ def main(band):
         elif len(meanDN) == len(ref) == 0:
             messagebox.showinfo('Discard!', 
                                     'No target is detected for calibration.')
+            raise UnboundLocalError
         
         return meanDN[-1], ref[-1], Fullfilename
     
