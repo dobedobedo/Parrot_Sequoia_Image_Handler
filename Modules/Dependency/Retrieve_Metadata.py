@@ -12,8 +12,8 @@ Usage:
 Add the following codes in your script:
     
 import Retrieve_Metadata
-from Retrieve_Metadata import PathImage
 
+PathImage = Retrieve_Metadata.OpenDirectory()
 Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'Tags')
 **************************************************************
 'Tags' are optional and must be separated by comma.
@@ -127,7 +127,13 @@ def Ext_SelectBox():
     m.destroy()
     return m.value
 
-root = tk.Tk().withdraw()
-Ext = Ext_SelectBox()
-path = askdirectory()
-PathImage = os.path.join(path, '*.{}'.format(Ext))
+def OpenDirectory():
+    root = tk.Tk().withdraw()
+    Ext = Ext_SelectBox()
+    path = askdirectory()
+    PathImage = os.path.join(path, '*.{}'.format(Ext))
+    return PathImage
+
+def ShowMessage(title, text):
+    root = tk.Tk().withdraw()
+    messagebox.showinfo(title, text)

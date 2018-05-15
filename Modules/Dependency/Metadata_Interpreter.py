@@ -3,7 +3,7 @@
 """
 Created on Fri Jun 23 16:08:19 2017
 
-@author: Yu-Hsuan Tu
+@author: uqytu1
 """
 import math
 import numpy as np
@@ -38,6 +38,14 @@ def GetLonLat(Metadata):
 
 def GetAltitude(Metadata):
     return eval(Metadata['GPSAltitude'].split()[0])
+
+def GetRollPitchYaw(Metadata):
+    roll = eval(Metadata['Roll'])
+    pitch = eval(Metadata['Pitch'])
+    yaw = eval(Metadata['Yaw'])
+    if yaw < 0:
+        yaw = yaw + 360
+    return roll, pitch, yaw
 
 def GetTime(Metadata):
     Time = datetime.datetime.strptime(Metadata['SubSecDateTimeOriginal'], "%Y:%m:%d %H:%M:%S.%f")
@@ -127,3 +135,32 @@ def GetSunIrradiance(Metadata):
     Irradiance = count / (gain * exposuretime)
     return Irradiance
     
+def GetPowerCoefficients(Metadata):
+    powers = Metadata['VignettingPolynomial2DName']
+    coefficients = Metadata['VignettingPolynomial2D']
+    power_items = powers.split(',')
+    coefficient_items = coefficients.split(',')
+    powers_coefficients = list()
+    for i in range(0, len(power_items), 2):
+        powers_coefficients.append((int(power_items[i]), 
+                                    int(power_items[i+1]), 
+                                    float(coefficient_items[int(i/2)])))
+    return powers_coefficients
+
+def GetSensorModelCoef(Metadata):
+    Coefs = Metadata['SensorModel'].split(',')
+    return float(Coefs[0]), float(Coefs[1]), float(Coefs[2])
+
+def GetExposureTime(Metadata):
+    ExposureTime = Metadata['ExposureTime'].split('/')
+    if len(ExposureTime) > 1:
+        ExpinSec = float(ExposureTime[0]) / float(ExposureTime[1])
+    else:
+        ExpinSec = float(ExposureTime[0])
+    return ExpinSec
+
+def GetISO(Metadata):
+    return int(Metadata['ISO'])
+
+def GetFNumber(Metadata):
+    return float(Metadata['FNumber'])
