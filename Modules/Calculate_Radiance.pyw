@@ -3,7 +3,13 @@
 """
 Created on Mon May 14 14:39:56 2018
 
-@author: uqytu1
+@author: Yu-Hsuan Tu
+
+This module use the equation from Parrot developer manual SEQ-AN-01 to calculate arbitrary radiance.
+When executed, it will prompt the user to select the folder containing all images, 
+then ask for the reference image for each band to solve the arbitrary.
+The reference image must contains a Lambertian reflectance panel.
+Cancel the file dialog to skip solving arbitrary.
 """
 
 import os
