@@ -149,7 +149,7 @@ def GetPowerCoefficients(Metadata):
 
 def GetSensorModelCoef(Metadata):
     Coefs = Metadata['SensorModel'].split(',')
-    return float(Coefs[0]), float(Coefs[1]), float(Coefs[2])
+    return float(Coefs[0].strip('.')), float(Coefs[1].strip('.')), float(Coefs[2].strip('.'))
 
 def GetExposureTime(Metadata):
     ExposureTime = Metadata['ExposureTime'].split('/')
