@@ -112,6 +112,8 @@ if __name__ == '__main__':
             K_list[band] = K
         except TypeError:
             continue
+        except AttributeError:
+            continue
         
     for file in files:
         PowerCoefs = Metadata_Interpreter.GetPowerCoefficients(Metadata[file])
