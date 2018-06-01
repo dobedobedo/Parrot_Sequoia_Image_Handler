@@ -46,16 +46,21 @@ def Image_Math(Fullfilename, PowerCoefs, SensorModel, ExposureTime, ISO, FNumber
         # Correct vignetting effect
         Vig_corr_image = (image / Vig_Array).round()
         
+        if K == 1:
+            scalar = 100
+        else:
+            scalar = 10000
         # Calibrate to reflectance without using sunshine measurement.
         # This calculation assumes the irradiance level is equivalent across all images
-        outimage = K * math.pow(FNumber, 2) * (Vig_corr_image-SensorModel[1]) / (
-                SensorModel[0]*ExposureTime*ISO+SensorModel[2])
+        # A scalar is applied to make 100% equivalent to 10000 DN.
+        outimage = (scalar * K * math.pow(FNumber, 2) * (Vig_corr_image-SensorModel[1]) / (
+                    SensorModel[0]*ExposureTime*ISO+SensorModel[2])).round()
         
         # Limite the DN within data type range
-        np.clip(outimage, np.finfo(outimage.dtype).min, np.finfo(outimage.dtype).max, outimage)
+        np.clip(outimage, np.iinfo(image.dtype).min, np.iinfo(image.dtype).max, outimage)
         
-        # Reduce the float precision to 32-bit
-        outimage = outimage.astype(np.float32)
+        # Save the output image to the same format as input
+        outimage = outimage.astype(image.dtype)
             
         OutFile = os.path.join(outpath,filename)
         if os.path.exists(OutFile):
