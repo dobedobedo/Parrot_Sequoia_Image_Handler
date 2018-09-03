@@ -22,7 +22,7 @@ from Dependency import Retrieve_Metadata
 from Dependency import Metadata_Interpreter
 from Dependency import Image_masking
 
-def Image_Math(Fullfilename, PowerCoefs, SensorModel, ExposureTime, ISO, FNumber, K):
+def Image_Math(Fullfilename, SensorModel, ExposureTime, ISO, FNumber, K):
     path, filename = os.path.split(Fullfilename)
     outpath = os.path.join(path, 'Radiance')
     if not os.path.exists(outpath):
@@ -39,13 +39,10 @@ def Image_Math(Fullfilename, PowerCoefs, SensorModel, ExposureTime, ISO, FNumber
         bands.append(InputFile.GetRasterBand(band+1))
     ndv = bands[band].GetNoDataValue()
     image = np.zeros((rows,cols), dtype=InputFile.ReadAsArray().dtype)
-    Vig_Array = VignettingArray(PowerCoefs, rows, cols)
-    
+        
     for band in range(channel):
         image = bands[band].ReadAsArray(0,0,cols,rows)
-        # Correct vignetting effect
-        Vig_corr_image = (image / Vig_Array).round()
-        
+                
         if K == 1:
             scalar = 100
         else:
@@ -53,7 +50,7 @@ def Image_Math(Fullfilename, PowerCoefs, SensorModel, ExposureTime, ISO, FNumber
         # Calibrate to reflectance without using sunshine measurement.
         # This calculation assumes the irradiance level is equivalent across all images
         # A scalar is applied to make 100% equivalent to 10000 DN.
-        outimage = (scalar * K * math.pow(FNumber, 2) * (Vig_corr_image-SensorModel[1]) / (
+        outimage = (scalar * K * math.pow(FNumber, 2) * (image-SensorModel[1]) / (
                     SensorModel[0]*ExposureTime*ISO+SensorModel[2])).round()
         
         # Limite the DN within data type range
@@ -79,19 +76,9 @@ def Image_Math(Fullfilename, PowerCoefs, SensorModel, ExposureTime, ISO, FNumber
     subprocess.run(['exiftool', '-tagsFromFile', Fullfilename, '-ALL', '-XMP', OutFile])
     subprocess.run(['exiftool', '-delete_original!', OutFile])
         
-def VignettingArray(PowerCoefs, rows, cols):
-    Vig_Array = np.ones((rows, cols))
-    PowerArray = np.array(PowerCoefs)
-    for y, x in [(y, x) for y in range(rows) for x in range(cols)]:
-        Vig_Array[y, x] = (
-                PowerArray[:, 2] * np.power(x/cols, PowerArray[:, 0]) * np.power(y/rows, PowerArray[:, 1])
-                ).sum()
-    return Vig_Array
-
 if __name__ == '__main__':
     PathImage = Retrieve_Metadata.OpenDirectory()
-    Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'VignettingPolynomial2DName', 'VignettingPolynomial2D',
-                                              'SensorModel', 'ExposureTime', 'ISO', 'FNumber', 'BandName')
+    Metadata = Retrieve_Metadata.RetrieveData(PathImage, 'SensorModel', 'ExposureTime', 'ISO', 'FNumber', 'BandName')
     
     gdal.AllRegister()
     
@@ -121,13 +108,12 @@ if __name__ == '__main__':
             continue
         
     for file in files:
-        PowerCoefs = Metadata_Interpreter.GetPowerCoefficients(Metadata[file])
         SensorModel = Metadata_Interpreter.GetSensorModelCoef(Metadata[file])
         ExposureTime = Metadata_Interpreter.GetExposureTime(Metadata[file])
         ISO = Metadata_Interpreter.GetISO(Metadata[file])
         FNumber = Metadata_Interpreter.GetFNumber(Metadata[file])
         BandName = Metadata[file]['BandName']
-        Image_Math(os.path.join(path, file), PowerCoefs, SensorModel, ExposureTime, ISO, FNumber, K_list[BandName])
+        Image_Math(os.path.join(path, file), SensorModel, ExposureTime, ISO, FNumber, K_list[BandName])
         
     Retrieve_Metadata.ShowMessage('Done', 'Finish processing image')
     
