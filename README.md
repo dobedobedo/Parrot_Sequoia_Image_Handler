@@ -6,7 +6,8 @@ Modules will be continuously updated
 # Tools included:
   - **Creating_Shape**: Create shapefile and kml for images waypoints and shapefile for trajectory based on photo's geotags  
   - **Sunshine_Normalisation**: Adjust photo's brightness based on the sunshine sensor's measurement  
-  - **Calculate_Radiance**: Correct photo's vignetting effect then convert it to radiance with or without panel image.
+  - **Calculate_Radiance**: Convert Photo's pixel values to radiance without panel image or reflectance with panel image.  
+  - **Vignetting_Correction**: Correct photo's vignetting effect
   
 # Note
 Several python dependencies are needed:  
