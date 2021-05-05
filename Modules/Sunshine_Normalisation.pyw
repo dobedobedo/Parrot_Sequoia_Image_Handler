@@ -14,7 +14,7 @@ and manipulate the other photos based on the sunshine irradiance ratio to the re
 import os
 import subprocess
 import numpy as np
-import gdal
+from osgeo import gdal
 from osgeo import gdal_array
 from Dependency import Retrieve_Metadata
 from Dependency import Metadata_Interpreter

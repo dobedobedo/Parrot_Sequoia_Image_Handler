@@ -15,8 +15,8 @@ Cancel the file dialog to skip solving arbitrary.
 import os
 import subprocess
 import numpy as np
-import gdal
 import math
+from osgeo import gdal
 from osgeo import gdal_array
 from Dependency import Retrieve_Metadata
 from Dependency import Metadata_Interpreter

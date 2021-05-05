@@ -13,7 +13,7 @@ software packages (e.g. Pix4DMapper, Agisoft PhotoScan)
 import os
 import subprocess
 import numpy as np
-import gdal
+from osgeo import gdal
 from osgeo import gdal_array
 from Dependency import Retrieve_Metadata
 from Dependency import Metadata_Interpreter

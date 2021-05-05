@@ -22,7 +22,7 @@ import os
 import numpy as np
 import numpy.ma as ma
 import cv2
-import gdal
+from osgeo import gdal
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
 from tkinter import messagebox
